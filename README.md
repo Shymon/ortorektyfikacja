@@ -1,5 +1,5 @@
 Wymagane biblioteki:
-`numpy rasterio parse srt pillow cv2`
+`numpy rasterio parse srt pillow cv2 utm`
 
 Program używa programu `exiftool` i wymaga go zainstalowanego w ścieżce systemowej.
 
