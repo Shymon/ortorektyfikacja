@@ -178,7 +178,7 @@ if video_path:
       ret, frame = cap.read() 
       current_frame += 1
 
-      if not(ret) or max_frames <= frames_processed:
+      if not(ret) or (max_frames and max_frames <= frames_processed):
         break
 
       if skip_frames and (current_frame - 1) % skip_frames != 0:
