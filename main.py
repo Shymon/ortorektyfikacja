@@ -37,8 +37,8 @@ parser.add_argument('-i', type=str, help='Metoda interpolacji (domyślnie \'none
                           choices=['none', 'neighbours_avg', 'bilinear'])
 parser.add_argument('-t', type=int, help='Liczba wątków używanych do przeprowadzania ortorektyfikacji (domyślnie 6)', default=6)
 parser.add_argument('--debug', help='Czy wyświetlać informacje debugowania (domyślnie false)', action='store_true')
-parser.add_argument('--sensorWidth', type=float, help='Wysokość sensora kamery w mm (domyślnie 6.1)', default=6.1)
-parser.add_argument('--sensorHeight', type=float, help='Szerokość sensora kamery w mm (domyślnie 4.7)', default=4.7)
+parser.add_argument('--sensorWidth', type=float, help='Szerokość sensora kamery w mm (domyślnie 6.1)', default=6.1)
+parser.add_argument('--sensorHeight', type=float, help='Wysokość sensora kamery w mm (domyślnie 4.7)', default=4.7)
 parser.add_argument('--step', type=float, help="""Domyślny krok ortorektyfikacji (rzeczywista długość 
                                                   w metrach przypadająca na 1 piksel) (domyślnie 0.15)""", default=0.15)
 parser.add_argument('--altitude', type=float, help='Średnia wysokość terenu na zdjęciach względem wysokości drona (domyślnie 0)',
