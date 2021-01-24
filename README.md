@@ -10,7 +10,7 @@ Przykład użycia dla nagrania z Mavica 2ED (przetwarzanie co 250 klatki, maksym
 `$ docker run --name ortorektyfikacja --rm -i -v $(pwd):/app/program -t shymonr/ortorektyfikacja python3 main.py -v nagranie.mp4 -s plik_srt.SRT --skipFrames 250 --altitude 270 -o ./results --maxFrames 5`    
 
 
-W przypadku nie osiągalności obrazu dockera `shymonr/ortorektyfikacja` można go zbudować lokalnie, w tym celu należy wywołać polecenie `$ docker build . --tag shymonr/ortorektyfikacja` będąc w katalogu z programem.
+W przypadku nieosiągalności obrazu dockera `shymonr/ortorektyfikacja` można go zbudować lokalnie, w tym celu należy wywołać polecenie `$ docker build . --tag shymonr/ortorektyfikacja` będąc w katalogu z programem.
 
 ---
 
