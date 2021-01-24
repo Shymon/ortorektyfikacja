@@ -184,7 +184,7 @@ if video_path:
       if skip_frames and (current_frame - 1) % skip_frames != 0:
         continue
 
-      print('Przetwadzanie klatki nr', current_frame)
+      print('Przetwarzanie klatki nr', current_frame)
 
       current_frame_data = srt_data[current_frame]
       current_frame_data.update({
