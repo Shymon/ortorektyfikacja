@@ -5,7 +5,7 @@ import gps_coordinates
 import numpy as np
 
 class Data:
-  def __init__(self, data_source, photo_exif_data, frame_srt_data, sensor_width, sensor_height):
+  def __init__(self, data_source, photo_exif_data, frame_srt_data, sensor_width, sensor_height, focal_length):
     """
       data_source - 'srt' or 'exif' - describes data source
 
@@ -18,7 +18,10 @@ class Data:
       sensor_height in meters  
     """
     if data_source == 'exif':
-      self.focal_length_mm = float(photo_exif_data.get('Focal Length').split(' ')[0])
+      if photo_exif_data.get('Focal Length'):
+        self.focal_length_mm = float(photo_exif_data.get('Focal Length').split(' ')[0])
+      else:
+        self.focal_length_mm = focal_length
       self.focal_length = self.focal_length_mm / 1000
 
       self.relative_pitch = (90 + float(photo_exif_data.get('Gimbal Pitch Degree')))
@@ -26,10 +29,13 @@ class Data:
       self.roll, self.pitch, self.yaw = angles.from_exif(photo_exif_data)
       self.rotation_matrix = rotation_matrix.create(self.roll, self.pitch, self.yaw)
 
-      self.gps_altitude = float(photo_exif_data.get('GPS Altitude').split(' ')[0])
+      if photo_exif_data.get('Relative Altitude'):
+        self.gps_altitude = float(photo_exif_data.get('Relative Altitude').split(' ')[0])
+      else:
+        self.gps_altitude = float(photo_exif_data.get('GPS Altitude').split(' ')[0])
       self.utm_latitude, self.utm_longtitude, self.zone, self.zone_letter = gps_coordinates.to_utm(
-        float(photo_exif_data.get('Latitude')),
-        float(photo_exif_data.get('Longitude'))
+        float(photo_exif_data.get('Latitude') or gps_coordinates.convert_wgs(photo_exif_data.get('GPS Latitude'))),
+        float(photo_exif_data.get('Longitude') or gps_coordinates.convert_wgs(photo_exif_data.get('GPS Longitude')))
       )
       self.X0 = self.utm_latitude
       self.Y0 = self.utm_longtitude

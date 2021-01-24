@@ -30,7 +30,8 @@ parser.add_argument('-v' , type=str, help="""Plik wejściowy wideo, wymagany prz
 parser.add_argument('-s' , type=str, help='Plik wejściowy SRT związany z wideo. Wymagany przy podaniu pliku wideo.')
 parser.add_argument('--skipFrames' , type=int, help='Ile klatek przy przetwarzaniu wideo pomijać.')
 parser.add_argument('--maxFrames' , type=int, help='Maksymalna liczba przetworzonych klatek po której program kończy działanie.')
-parser.add_argument('--videoFocalLength' , type=str, help='Wartość ogniskowej kamery dla wideo w mm (domyślnie 4.5).', default=4.5)
+parser.add_argument('--focalLength' , type=str, help="""Wartość ogniskowej kamery w mm (domyślnie 4.5). Jeżeli brauje informacji w
+                                                      pliku to brana jest ta wartość""", default=4.5)
 parser.add_argument('-o', type=str, help='Folder na obrazy wyjściowe (domyślnie \'.\')', default='.')
 parser.add_argument('-i', type=str, help='Metoda interpolacji (domyślnie \'none\')', default='none',
                           choices=['none', 'neighbours_avg', 'bilinear'])
@@ -55,7 +56,7 @@ video_path = args.v
 srt_file_path = args.s
 skip_frames = args.skipFrames
 max_frames = args.maxFrames
-video_focal_length = args.videoFocalLength
+focal_length = args.focalLength
 interpolation_method = args.i
 sensor_width = args.sensorWidth
 sensor_height = args.sensorHeight
@@ -184,16 +185,16 @@ if video_path:
       if skip_frames and (current_frame - 1) % skip_frames != 0:
         continue
 
-      print('Przetwarzanie klatki nr', current_frame)
+      print('Przetwadzanie klatki nr', current_frame)
 
       current_frame_data = srt_data[current_frame]
       current_frame_data.update({
-        'focal_length': video_focal_length,
+        'focal_length': focal_length,
         'image_width': frame.shape[1],
         'image_height': frame.shape[0]
       })
 
-      orthorectification_data = orthorectification.Data('srt', {}, current_frame_data, sensor_width, sensor_height)
+      orthorectification_data = orthorectification.Data('srt', {}, current_frame_data, sensor_width, sensor_height, focal_length)
       process_image(orthorectification_data, frame, f'Frame {current_frame}')
       frames_processed += 1
 
@@ -221,8 +222,9 @@ else:
       'exif',
       photo_data,
       {},
-      sensor_width= sensor_width / 1000,
-      sensor_height= sensor_height / 1000
+      sensor_width / 1000,
+      sensor_height / 1000,
+      focal_length
     )
 
     image = Image.open(file_path)
