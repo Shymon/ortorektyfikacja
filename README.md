@@ -12,6 +12,9 @@ Przykład użycia dla nagrania z Mavica 2ED (przetwarzanie co 250 klatki, maksym
 
 W przypadku nieosiągalności obrazu dockera `shymonr/ortorektyfikacja` można go zbudować lokalnie, w tym celu należy wywołać polecenie `$ docker build . --tag shymonr/ortorektyfikacja` będąc w katalogu z programem.
 
+## System Windows
+W przypadku gdy hostem jest system Windows jest wymagana zamiana `$(pwd)` na `"%cd%"`, przykładowo: `$ docker run --name ortorektyfikacja --rm -i -v "%cd%":/app/program -t shymonr/ortorektyfikacja python3 main.py -d ./photos -o ./results` 
+
 ---
 
 Wymagane biblioteki:
