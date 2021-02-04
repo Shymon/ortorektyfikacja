@@ -33,9 +33,18 @@ class Data:
         self.gps_altitude = float(photo_exif_data.get('Relative Altitude').split(' ')[0])
       else:
         self.gps_altitude = float(photo_exif_data.get('GPS Altitude').split(' ')[0])
+
+      # Fix for windows where exiftoll returns string in Latitude and Longitude instead of float like in unix
+      try:
+        float_latitude = float(photo_exif_data.get('Latitude'))
+        float_longitude = float(photo_exif_data.get('Longitude'))
+      except:
+        float_latitude = photo_exif_data.get('Latitude') and gps_coordinates.convert_wgs(photo_exif_data.get('Latitude'))
+        float_longitude = photo_exif_data.get('Longitude') and gps_coordinates.convert_wgs(photo_exif_data.get('Longitude'))
+
       self.utm_latitude, self.utm_longtitude, self.zone, self.zone_letter = gps_coordinates.to_utm(
-        float(photo_exif_data.get('Latitude') or gps_coordinates.convert_wgs(photo_exif_data.get('GPS Latitude'))),
-        float(photo_exif_data.get('Longitude') or gps_coordinates.convert_wgs(photo_exif_data.get('GPS Longitude')))
+        float(float_latitude or gps_coordinates.convert_wgs(photo_exif_data.get('GPS Latitude'))),
+        float(float_longitude or gps_coordinates.convert_wgs(photo_exif_data.get('GPS Longitude')))
       )
       self.X0 = self.utm_latitude
       self.Y0 = self.utm_longtitude
